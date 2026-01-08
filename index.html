@@ -35,6 +35,61 @@ body {
   pointer-events: none;
   z-index: 0;
 }
+.prepni-btn {
+    background: linear-gradient(90deg, #007bff, #3399ff);
+    color: white;
+    font-weight: 600;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin: 5px;
+    font-size: 14px;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+    transition: 0.2s ease-in-out;
+}
+.prepni-btn:hover {
+    background: linear-gradient(90deg, #005fcc, #1a8cff);
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(0, 123, 255, 0.6);
+}
+.prepni-btn.active {
+  background-color: #2e7d32;
+  color: #fff;
+  border-color: #1b5e20;
+  box-shadow: 0 0 0 2px rgba(46,125,50,0.3);
+}
+textarea {
+    resize: none;
+}
+.long-input {
+    width: 30% !important;
+    max-width: 100%;
+}
+.popis2 {
+    min-height: 60px;
+    padding: 8px 10px;
+    border: 1px solid rgba(0,0,0,0.15);   /* jemná linka */
+    border-radius: 6px;                   /* moderní zaoblení */
+    background: rgba(0,0,0,0.02);         /* velmi jemné zesvětlení */
+    outline: none;
+    position: relative;
+}
+
+/* Placeholder efekt */
+.popis2:empty:before {
+    content: attr(data-placeholder);
+    color: rgba(0,0,0,0.35);
+    pointer-events: none;
+}
+.zaznam {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.zaznam.aktivni {
+  opacity: 1;
+}
 @media print {
   .a4::before {
     content: "";
@@ -51,35 +106,11 @@ body {
     pointer-events: none;
     z-index: 0;
   }
-.prepni-btn {
-  background-color: #e0e0e0;
-  border: 1px solid #999;
-  border-radius: 6px;
-  padding: 8px 12px;
-  margin: 5px;
-  font-size: 14px;
-  font-weight: bold;
-  color: #333;
-  cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  transition: all 0.2s ease-in-out;
-}
-
-.prepni-btn:hover {
-  background-color: #d5d5d5;
-  transform: translateY(-1px);
-}
-
-.prepni-btn.active {
-  background-color: #2e7d32;
-  color: #fff;
-  border-color: #1b5e20;
-  box-shadow: 0 0 0 2px rgba(46,125,50,0.3);
-}
   button,
   .razitko {
     display: none !important;
   }
+  
 .popis {
   width: 100%;
   min-height: 120px;
@@ -185,6 +216,26 @@ textarea {
   object-fit: contain;
   page-break-inside: avoid;
 }
+
+.pdf-btn {
+    background-color: #ff3b3b;      /* výrazná červená */
+    color: white;
+    font-weight: bold;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-left: 10px;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+    transition: 0.2s ease;
+}
+
+.pdf-btn:hover {
+    background-color: #d60000;
+    box-shadow: 0 0 14px rgba(255, 0, 0, 0.7);
+    transform: scale(1.05);
+}
+
 button {
   margin-top: 5px;
   font-size: 13px;
@@ -219,8 +270,11 @@ button {
 <button class="prepni-btn" onclick="zobrazZaznam(2)">2️⃣ Záznam o nehodě</button>
 <button class="prepni-btn" onclick="zobrazZaznam(3)">3️⃣ Zahájení trestního řízení</button>
 <button class="prepni-btn" onclick="zobrazZaznam(4)">4️⃣ Zásah</button>
+<button class="prepni-btn" onclick="zobrazZaznam(5)">5️⃣ Záznam o použití DP</button>
+<button class="prepni-btn" onclick="zobrazZaznam(6)">6️⃣ Záznam o pokutě</button>
+<button class="no-print pdf-btn" onclick="downloadPDF()">Uložit jako PDF</button>
 </div>
-<div id="zaznam1" class="a4">
+<div id="zaznam1" class="a4 zaznam">
     <h1>ÚŘEDNÍ ZÁZNAM</h1>
     <div class="dil">díl A</div>
     <div class="cislo">Záznam č. <span id="cislo"></span></div>
@@ -335,9 +389,8 @@ zák. č. 141/1961 Sb. TŘ<br>
 </div>
 
 <img src="razitko.png" alt="Razítko" class="razitko">
-<button onclick="downloadPDF()">Uložit jako PDF</button>
 </div> <!-- konec #zaznam1 -->
-<div id="zaznam2" class="a4" style="display: none;">
+<div id="zaznam2" class="a4 zaznam" style="display: none;">
   <h1>ÚŘEDNÍ ZÁZNAM O NEHODĚ</h1>
   <div class="dil">díl B</div>
   <div class="cislo">Záznam č. <span id="cislo2"></span></div>
@@ -368,9 +421,8 @@ zák. č. 141/1961 Sb. TŘ<br>
   </div>
 
   <img src="razitko.png" alt="Razítko" class="razitko">
-  <button onclick="downloadPDF()">Uložit jako PDF</button>
 </div>
-<div id="zaznam3" class="a4" style="display: none;">
+<div id="zaznam3" class="a4 zaznam" style="display: none;">
   <h1>ZAHÁJENÍ TRESTNÍHO ŘÍZENÍ</h1>
   <div class="dil">díl C</div>
   <div class="cislo">Záznam č. <span id="cislo3"></span></div>
@@ -407,9 +459,8 @@ zák. č. 141/1961 Sb. TŘ<br>
     </div>
 
   <img src="razitko.png" alt="Razítko" class="razitko">
-  <button onclick="downloadPDF()">Uložit jako PDF</button>
   </div></div>
-<div id="zaznam4" class="a4" style="display: none;">
+<div id="zaznam4" class="a4 zaznam" style="display: none;">
   <h1>ZÁZNAM O ZÁSAHU</h1>
   <div class="dil">díl D</div>
   <div class="cislo">Záznam č. <span id="cislo4"></span></div>
@@ -446,14 +497,160 @@ zák. č. 141/1961 Sb. TŘ<br>
 
   <img src="razitko.png" alt="Razítko" class="razitko">
   <button class="no-print" onclick="downloadPDF()">Uložit jako PDF</button>
+</div>
+<div id="zaznam5" class="a4 zaznam" style="display:none;">
+  <h1>ZÁZNAM O POUŽITÍ DONUCOVACÍCH PROSTŘEDKŮ</h1>
+
+<div class="cislo">Č. j.: <span id="cislo5"></span></div>
+
+  <div class="radek">
+    <label>Datum a čas zásahu:</label>
+    <input type="text" placeholder="např. 08.10.2025 14:30" required>
+  </div>
+
+  <div class="radek">
+    <label>Místo zákroku:</label>
+    <input type="text" placeholder="Ulice, číslo, město">
+  </div>
+
+  <div class="radek">
+    <label>Zakročující policisté:</label>
+    <input type="text" placeholder="Jméno, služební číslo">
+  </div>
+
+  <div class="radek">
+    <label>Osoba, vůči které byly prostředky použity:</label>
+    <input type="text" placeholder="Jméno, příjmení">
+  </div>
+  
+  <div class="radek">
+    <label>Druh použitého donucovacího prostředku:</label>
+    <input type="text" placeholder="Např. hmaty, chvaty, pouta...">
+  </div>
+
+<label><strong>Důvod použití:</strong></label>
+<div class="popis2" contenteditable="true" data-placeholder="Popište důvod použití donucovacích prostředků"></div>
+
+<label><strong>Průběh zákroku:</strong></label>
+<div class="popis2" contenteditable="true" data-placeholder="Detailní popis průběhu zákroku"></div>
+
+<label><strong>Zranění osoby:</strong></label>
+<div class="popis2" contenteditable="true" data-placeholder="Popis zranění, pokud vznikla"></div>
+
+<label><strong>Zranění policistů:</strong></label>
+<div class="popis2" contenteditable="true" data-placeholder="Popis zranění policistů, pokud vznikla"></div>
+
+<label><strong>Poskytnutá první pomoc:</strong></label>
+<div class="popis2" contenteditable="true" data-placeholder="Kdo poskytl, kdy, jak"></div>
+
+  <div class="radek">
+    <label>Přivolané složky:</label>
+    <input type="text" placeholder="ZZS, HZS, další hlídky…">
+  </div>
+
+<label><strong>Další opatření:</strong></label>
+<div class="popis2" contenteditable="true" data-placeholder="Např. zajištění místa, předvedení osoby…"></div>
+
+  <div class="podpisy">
+    <div class="radek">
+      <label>Zakročující policista:</label>
+      <input type="text" placeholder="Jméno a příjmení">
+    </div>
+
+  <div class="radek">
+    <label>Datum a čas vyhotovení:</label>
+    <input type="text" placeholder="např. 08.10.2025 14:30" required>
+  </div>
+  </div>
+
+  <img src="razitko.png" class="razitko" alt="Razítko">
+</div>
+<div id="zaznam6" class="a4 zaznam" style="display:none;">
+  <h1>Záznam o udělení pokuty</h1>
+
+<div class="cislo">Číslo pokuty: <span id="cislo6"></span></div>
+
+  <div class="radek">
+    <label>Jméno a příjmení osoby:</label>
+    <input type="text" placeholder="např. Jan Koukal" required>
+  </div>
+
+  <div class="radek">
+    <label>Datum a čas přestupku:</label>
+    <input type="text" placeholder="Např. 7. 1. 2026, 20:15">
+  </div>
+
+  <div class="radek">
+    <label>Místo přestupku:</label>
+    <input type="text" placeholder="Např. Město, ulice…">
+  </div>
+
+  <div class="radek">
+    <label>Druh přestupku:</label>
+    <input type="text" placeholder="Např. §125c odst. 1 pís. k)">
+  </div>
+
+  <div class="radek">
+    <label><strong>Popis přestupku:</strong></label>
+    <div class="popis2 popis" contenteditable="true" data-placeholder="Popište průběh a okolnosti přestupku"></div>
+  </div>
+
+  <div class="radek">
+    <label><strong>Výše pokuty:</strong></label>
+    <div class="popis2" contenteditable="true" data-placeholder="Např. 1 000 Kč"></div>
+  </div>
+
+<div class="zakony">
+  <strong>Trestné body:</strong><br>
+    <label><input type="checkbox" name="dz3"><strong> Ano</strong></label><br> <div class="popis2 popis" contenteditable="true" data-placeholder="Např. 2 body."></div>
+    <label><input type="checkbox" name="dz3"><strong> Ne</strong></label><br>
+</div>
+
+<div class="zakony">
+  <strong>Forma úhrady:</strong><br>
+    <label><input type="checkbox" name="dz3"><strong> a),</strong></label> - Na místě blokovou pokutou.<br>
+    <label><input type="checkbox" name="dz3"><strong> b),</strong></label> - Blok na pokutu na místě nezaplacenou.<br>
+    <label><input type="checkbox" name="dz3"><strong> c),</strong></label> - Věc předána správnímu řízení.<br>
+</div>
+
+  <div class="radek">
+    <label><strong>Další poznámky:</strong></label>
+    <div class="popis2" contenteditable="true" data-placeholder="Nepovinné pole"></div>
+  </div>
+  
+    <div class="podpisy">
+    <div class="radek">
+      <label>Policista:</label>
+      <input type="text" placeholder="Jméno a příjmení">
+    </div>
+
+  <div class="radek">
+    <label>Datum a čas vyhotovení:</label>
+    <input type="text" placeholder="např. 08.10.2025 14:30" required>
+  </div>
+  </div>
 </div></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script>
+    
+    document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("zaznam1").classList.add("fade");
+});
+
 function zobrazZaznam(volba) {
-  for (let i = 1; i <= 4; i++) {
-    document.getElementById(`zaznam${i}`).style.display = volba === i ? "block" : "none";
+  for (let i = 1; i <= 6; i++) {
+    const blok = document.getElementById(`zaznam${i}`);
+    blok.style.display = volba === i ? "block" : "none";
+    blok.classList.remove("fade");
   }
+
+  const aktivni = document.getElementById(`zaznam${volba}`);
+
+  // malá pauza, aby transition fungovala
+  setTimeout(() => {
+    aktivni.classList.add("fade");
+  }, 10);
 
   const tlacitka = document.querySelectorAll(".prepni-btn");
   tlacitka.forEach((btn, index) => {
@@ -465,10 +662,17 @@ function zobrazZaznam(volba) {
 
   <script>
     const cislo = Math.floor(10000 + Math.random() * 90000);
-    document.getElementById("cislo").textContent = cislo;
-    document.getElementById("cislo2").textContent = Math.floor(10000 + Math.random() * 90000);
-    document.getElementById("cislo3").textContent = Math.floor(10000 + Math.random() * 90000);
-    document.getElementById("cislo4").textContent = Math.floor(10000 + Math.random() * 90000);
+    const rnd = Math.floor(10000 + Math.random() * 90000); // 5 číslic
+    const rok = new Date().getFullYear();                  // aktuální rok
+    const poradi = Math.floor(1000 + Math.random() * 9000); // 4 číslice
+    const pokutaPoradi = Math.floor(10000 + Math.random() * 90000); // 5 číslic
+    document.getElementById("cislo").textContent = `KRPU-ÚŘ-Z${rnd}/ČJ-${rok}-${poradi}`;
+    document.getElementById("cislo2").textContent = `KRPU-ZON${rnd}/ČJ-${rok}-${poradi}`;
+    document.getElementById("cislo3").textContent = `KRPU-ZJ-TŘ${rnd}/ČJ-${rok}-${poradi}`;
+    document.getElementById("cislo4").textContent = `KRPU-ZS${rnd}/ČJ-${rok}-${poradi}`;
+    document.getElementById("cislo5").textContent = `KRPU-${rnd}/ČJ-${rok}-${poradi}`;
+    document.getElementById("cislo6").textContent = `KRPU-PKT-${rok}-ČJ-${pokutaPoradi}`;
+
 function downloadPDF() {
 let aktivni = "zaznam1";
 if (document.getElementById("zaznam2").style.display !== "none") {
@@ -477,15 +681,20 @@ if (document.getElementById("zaznam2").style.display !== "none") {
   aktivni = "zaznam3";
 } else if (document.getElementById("zaznam4").style.display !== "none") {
   aktivni = "zaznam4";
+} else if (document.getElementById("zaznam5").style.display !== "none") {
+  aktivni = "zaznam5";
+} else if (document.getElementById("zaznam6").style.display !== "none") {
+  aktivni = "zaznam6";
 }
 
   const element = document.getElementById(aktivni);
-  const popis = element.querySelector(".popis").textContent.trim();
+let popisElement = element.querySelector(".popis") || element.querySelector("textarea");
+let popis = popisElement ? popisElement.value?.trim?.() || popisElement.textContent.trim() : "";
   const hlaska = document.getElementById("hlaska");
 
   // Získání jména podle typu záznamu
   let jmeno = "Záznam";
-  if (aktivni === "zaznam1") {
+if (aktivni === "zaznam1") {
   jmeno = document.getElementById("osoba")?.value?.trim() || jmeno;
 } else if (aktivni === "zaznam2") {
   const podpisInput = document.querySelector("#zaznam2 .podpisy input");
@@ -493,25 +702,34 @@ if (document.getElementById("zaznam2").style.display !== "none") {
 } else if (aktivni === "zaznam3") {
   const osobaInput = document.querySelector("#zaznam3 .radek input");
   jmeno = osobaInput?.value?.trim() || jmeno;
+} else if (aktivni === "zaznam5") {
+  const osobaInput = document.querySelector("#zaznam5 .radek input");
+  jmeno = osobaInput?.value?.trim() || jmeno;
+} else if (aktivni === "zaznam6") {
+  const osobaInput = document.querySelector("#zaznam6 .radek .popis2");
+  jmeno = osobaInput?.textContent.trim() || jmeno;
 }
+
 
   hlaska.style.display = "none";
 
 if (!popis) {
   hlaska.textContent =
     aktivni === "zaznam1"
-      ? "Vyplň popis skutku"
+      ? "Vyplň popis skutku!"
       : aktivni === "zaznam2"
-        ? "Vyplň popis nehody"
+        ? "Vyplň popis nehody!"
         : aktivni === "zaznam3"
-          ? "Vyplň popis skutku"
-          : "Vyplň průběh zásahu";
-    hlaska.style.display = "block";
-    setTimeout(() => {
-      hlaska.style.display = "none";
-    }, 3000);
-    return;
-  }
+          ? "Vyplň popis skutku!"
+        : aktivni === "zaznam6"
+          ? "Vyplň popis přestupku!"
+          : "Vyplň popis!";
+
+
+  hlaska.style.display = "block";
+  setTimeout(() => hlaska.style.display = "none", 3000);
+  return;
+}
 
 const nazevSouboru =
   aktivni === "zaznam1"
@@ -520,7 +738,11 @@ const nazevSouboru =
       ? `Úřední Záznam o nehodě - ${jmeno}.pdf`
       : aktivni === "zaznam3"
         ? `Zahájení trestního řízení - ${jmeno}.pdf`
-        : `Zásah - ${jmeno}.pdf`;
+        : aktivni === "zaznam5"
+          ? `Záznam o použití donucovacích prostředků - ${jmeno}.pdf`
+        : aktivni === "zaznam6"
+          ? `Sepsání pokuty - ${jmeno}.pdf`
+          : `Zásah - ${jmeno}.pdf`;
 
   const opt = {
     margin: 0,
@@ -538,6 +760,12 @@ const nazevSouboru =
   html2pdf().set(opt).from(element).save();
 }
 
+document.querySelectorAll("textarea").forEach((el) => {
+  el.addEventListener("input", () => {
+    el.style.height = "auto";      // reset
+    el.style.height = el.scrollHeight + "px"; // přizpůsobení obsahu
+  });
+});
 
   </script>
 </body>
